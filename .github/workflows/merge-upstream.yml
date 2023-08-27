@@ -35,9 +35,6 @@ jobs:
         git config --global pull.rebase false
         git config --global --list
 
-    - name: Load upstream commits
-      run: git pull https://github.com/coolsnowwolf/lede.git --log --no-commit
-
     - name: Update OpenClash
       run: |
         if [ -d "package/luci-app-openclash" ]; then
@@ -54,6 +51,9 @@ jobs:
         release=$(grep 'PKG_RELEASE:=' package/luci-app-openclash/Makefile | cut -d '=' -f 2)
         git add .
         git commit -am "[bot] AutoMerging: Update OpenClash $version-$release"
+
+    - name: Load upstream commits
+      run: git pull https://github.com/coolsnowwolf/lede.git --log --no-commit
 
     - name: Apply commit changes
       run: |
