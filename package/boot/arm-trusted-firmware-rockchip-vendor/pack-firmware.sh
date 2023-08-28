@@ -25,9 +25,9 @@ case "$VARIANT" in
 	ATF="rk35/rk3568_bl31_v1.43.elf"
 	DDR="rk35/rk3568_ddr_1560MHz_v1.18.bin"
 	;;
-"rk3568")
+"rk3588")
 	ATF="rk35/rk3588_bl31_v1.40.elf"
-	DDR="rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.10.bin"
+	DDR="rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.12.bin"
 	;;
 *)
 	echo -e "Not compatible with your platform: $VARIANT."
