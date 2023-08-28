@@ -50,7 +50,11 @@ jobs:
         version=$(grep 'PKG_VERSION:=' package/luci-app-openclash/Makefile | cut -d '=' -f 2)
         release=$(grep 'PKG_RELEASE:=' package/luci-app-openclash/Makefile | cut -d '=' -f 2)
         git add .
-        git commit -am "[bot] AutoMerging: Update OpenClash $version-$release"
+        if git commit -am "[bot] AutoMerging: Update OpenClash $version-$release" ; then
+          echo "Commit success"
+        else
+          echo "Nothing to commit"
+        fi
 
     - name: Load upstream commits
       run: git pull https://github.com/coolsnowwolf/lede.git --log --no-commit
