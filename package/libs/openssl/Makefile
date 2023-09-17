@@ -10,7 +10,8 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=openssl
 PKG_VERSION:=3.0.10
 PKG_RELEASE:=1
-PKG_BUILD_FLAGS:=no-mips16 gc-sections no-lto
+PKG_USE_MIPS16:=0
+PKG_BUILD_FLAGS:=gc-sections no-lto
 
 PKG_BUILD_PARALLEL:=1
 
@@ -406,7 +407,9 @@ define Package/libopenssl/install
 	chmod 0700 $(1)/etc/ssl/private
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/libcrypto.so.* $(1)/usr/lib/
+	$(LN) libcrypto.so.3 $(1)/usr/lib/libcrypto.so.1.1 
 	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/libssl.so.* $(1)/usr/lib/
+	$(LN) libssl.so.3 $(1)/usr/lib/libssl.so.1.1
 	$(if $(CONFIG_OPENSSL_ENGINE),$(INSTALL_DIR) $(1)/usr/lib/$(ENGINES_DIR))
 endef
 
