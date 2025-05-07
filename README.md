@@ -158,7 +158,7 @@ PS > git clone https://github.com/coolsnowwolf/lede <your_local_lede_path>
    echo 'export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"' >> ~/.bashrc
    ```
 
-5. 重新加载一下 shell 启动文件 `source ~/.bashrc`，然后输入 `bash` 进入 bash shell，就可以和 Linux 一样正常编译了. 如果 `make xxx` 提示 `Please use a newer version of GNU make. The version shipped by Apple is not supported` 尝试使用 `gmake` 代替
+5. 重新加载一下 shell 启动文件 `source ~/.bashrc`，然后输入 `bash` 进入 bash shell，就可以和 Linux 一样正常编译了
 
 ## 特别提示
 
