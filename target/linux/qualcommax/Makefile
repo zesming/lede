@@ -4,12 +4,12 @@ ARCH:=aarch64
 BOARD:=qualcommax
 BOARDNAME:=Qualcomm Atheros 802.11ax WiSoC-s
 FEATURES:=squashfs ramdisk fpu nand rtc emmc
-KERNELNAME:=Image dtbs
+KERNELNAME:=Image
 CPU_TYPE:=cortex-a53
 SUBTARGETS:=ipq50xx ipq60xx ipq807x
 
 KERNEL_PATCHVER:=6.6
-KERNEL_TESTING_PATCHVER:=6.1
+KERNEL_TESTING_PATCHVER:=6.12
 
 include $(INCLUDE_DIR)/target.mk
 DEFAULT_PACKAGES += \
