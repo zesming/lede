@@ -1,0 +1,75 @@
+#
+# This is free software, lisence use MIT.
+# 
+# Copyright (C) 2021 KFERMercer <KFER.Mercer@gmail.com>
+# 
+# <https://github.com/KFERMercer/OpenWrt-CI>
+#
+
+name: Merge-upstream
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+
+  merge:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        lfs: true
+
+    - name: Set git config
+      run : |
+        git config --global user.email "ming9010@gmail.com"
+        git config --global user.name "[AUTO]zesming"
+        git config --global pull.rebase false
+        git config --global --list
+
+    - name: Update OpenClash
+      run: |
+        if [ -d "package/luci-app-openclash" ]; then
+            rm -rf package/luci-app-openclash
+        else
+            echo "Directory does not exist"
+        fi
+        wget https://github.com/vernesong/OpenClash/archive/master.zip
+        unzip master.zip
+        cp -r OpenClash-master/luci-app-openclash package
+        rm -rf OpenClash-master 
+        rm master.zip
+        version=$(grep 'PKG_VERSION:=' package/luci-app-openclash/Makefile | cut -d '=' -f 2)
+        release=$(grep 'PKG_RELEASE:=' package/luci-app-openclash/Makefile | cut -d '=' -f 2)
+        git add .
+        if git commit -am "[bot] AutoMerging: Update OpenClash $version-$release" ; then
+          echo "Commit success"
+        else
+          echo "Nothing to commit"
+        fi
+
+    - name: Load upstream commits
+      run: git pull https://github.com/coolsnowwolf/lede.git --log --no-commit
+
+    - name: Apply commit changes
+      run: |
+        if [ -f ./.git/MERGE_MSG ]; then
+        mkdir ./tmp && cp ./.git/MERGE_MSG ./tmp/message
+        sed -i "1c [bot] AutoMerging: merge all upstream's changes:" ./tmp/message
+        # sed -i '/^\#.*/d' ./tmp/message
+        git commit --file="./tmp/message"
+        else
+        echo "There is no merge commits."
+        fi
+
+    - name: Push Commits
+      env:
+        DOWNSTREAM_BRANCH: ${{ github.ref_name }}
+      run: git push origin $DOWNSTREAM_BRANCH
