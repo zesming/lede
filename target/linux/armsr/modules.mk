@@ -319,3 +319,4 @@ define KernelPackage/wdt-sp805/description
 endef
 
 $(eval $(call KernelPackage,wdt-sp805))
+
