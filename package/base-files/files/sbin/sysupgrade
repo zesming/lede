@@ -34,7 +34,10 @@ export VERBOSE=1
 export SAVE_CONFIG=1
 export IGNORE_MINOR_COMPAT=0
 export FORCE=0
-export CONFFILES=/tmp/sysupgrade.conffiles
+export TEST=0
+export USE_CURR_PART=0
+export ADD_PROVISIONING=0
+export UMOUNT_ETCBACKUP_DIR=0
 
 # parse options
 while [ -n "$1" ]; do
@@ -43,17 +46,17 @@ while [ -n "$1" ]; do
 		-v) export VERBOSE="$(($VERBOSE + 1))";;
 		-q) export VERBOSE="$(($VERBOSE - 1))";;
 		-n) export SAVE_CONFIG=0;;
-		-c) SAVE_OVERLAY=1 SAVE_OVERLAY_PATH=/etc;;
-		-o) SAVE_OVERLAY=1 SAVE_OVERLAY_PATH=/;;
-		-p) SAVE_PARTITIONS=0;;
-		-P) ADD_PROVISIONING=1;;
-		-k) SAVE_INSTALLED_PKGS=1;;
-		-u) SKIP_UNCHANGED=1;;
-		-b|--create-backup) CONF_BACKUP="$2" NEED_IMAGE=1; shift;;
-		-r|--restore-backup) CONF_RESTORE="$2" NEED_IMAGE=1; shift;;
-		-l|--list-backup) CONF_BACKUP_LIST=1;;
-		-f) CONF_IMAGE="$2"; shift;;
-		-s) USE_CURR_PART=1;;
+		-c) export SAVE_OVERLAY=1 SAVE_OVERLAY_PATH=/etc;;
+		-o) export SAVE_OVERLAY=1 SAVE_OVERLAY_PATH=/;;
+		-p) export SAVE_PARTITIONS=0;;
+		-P) export ADD_PROVISIONING=1;;
+		-k) export SAVE_INSTALLED_PKGS=1;;
+		-u) export SKIP_UNCHANGED=1;;
+		-b|--create-backup) export CONF_BACKUP="$2" NEED_IMAGE=1; shift;;
+		-r|--restore-backup) export CONF_RESTORE="$2" NEED_IMAGE=1; shift;;
+		-l|--list-backup) export CONF_BACKUP_LIST=1;;
+		-f) export CONF_IMAGE="$2"; shift;;
+		-s) export USE_CURR_PART=1;;
 		-F|--force) export FORCE=1;;
 		-T|--test) TEST=1;;
 		-h|--help) HELP=1; break;;
@@ -66,6 +69,11 @@ while [ -n "$1" ]; do
 	esac
 	shift;
 done
+
+export CONFFILES=/tmp/sysupgrade.conffiles
+export CONF_TAR=/tmp/sysupgrade.tgz
+export ETCBACKUP_DIR=/etc/backup
+export INSTALLED_PACKAGES=${ETCBACKUP_DIR}/installed_packages.txt
 
 print_help() {
 	cat <<EOF

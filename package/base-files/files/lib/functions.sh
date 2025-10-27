@@ -214,11 +214,6 @@ default_prerm() {
 	[ -z "$pkgname" ] && local pkgname="$(basename ${1%.*})"
 	local ret=0
 	local filelist="${root}/usr/lib/opkg/info/${pkgname}.list"
-	[ -f "$root/lib/apk/packages/${pkgname}.list" ] && filelist="$root/lib/apk/packages/${pkgname}.list"
-
-	if [ -e "$root/lib/apk/packages/${pkgname}.alternatives" ]; then
-		update_alternatives remove "${pkgname}"
-	fi
 
 	if [ -f "$root/usr/lib/opkg/info/${pkgname}.prerm-pkg" ]; then
 		( . "$root/usr/lib/opkg/info/${pkgname}.prerm-pkg" )
@@ -241,7 +236,7 @@ default_prerm() {
 }
 
 add_group_and_user() {
-	[ -z "$pkgname" ] && local pkgname="$(basename ${1%.*})"
+	local pkgname="$(basename ${1%.*})"
 	local rusers="$(sed -ne 's/^Require-User: *//p' $root/usr/lib/opkg/info/${pkgname}.control 2>/dev/null)"
 	if [ -f "$root/lib/apk/packages/${pkgname}.rusers" ]; then
 		local rusers="$(cat $root/lib/apk/packages/${pkgname}.rusers)"
