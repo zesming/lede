@@ -310,13 +310,6 @@ define U-Boot/nanopi-r5s-rk3568
     friendlyarm_nanopi-r5s
 endef
 
-define U-Boot/nlnet-xgp-rk3568
-  $(U-Boot/rk3568/Default)
-  NAME:=NLnet XGP Board
-  BUILD_DEVICES:= \
-    nlnet_xgp
-endef
-
 define U-Boot/photonicat-rk3568
   $(U-Boot/rk3568/Default)
   NAME:=Ariaboard Photonicat
@@ -471,7 +464,6 @@ UBOOT_TARGETS := \
   mmbox-anas3035-rk3568 \
   nanopi-r5c-rk3568 \
   nanopi-r5s-rk3568 \
-  nlnet-xgp-rk3568 \
   photonicat-rk3568 \
   radxa-e25-rk3568 \
   rock-3a-rk3568 \
