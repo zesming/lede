@@ -17,10 +17,6 @@ endif
 opkg_package_files = $(wildcard \
 	$(foreach dir,$(PACKAGE_SUBDIRS), \
 	  $(foreach pkg,$(1), $(dir)/$(pkg)_*.ipk)))
-	  
-apk_package_files = $(wildcard \
-	$(foreach dir,$(PACKAGE_SUBDIRS), \
-	  $(foreach pkg,$(1), $(dir)/$(pkg)_*.apk)))
 
 apk_package_files = $(wildcard \
 	$(foreach dir,$(PACKAGE_SUBDIRS), \

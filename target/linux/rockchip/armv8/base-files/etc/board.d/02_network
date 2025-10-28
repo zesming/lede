@@ -43,7 +43,6 @@ rockchip_setup_interfaces()
 	friendlyarm,nanopi-r76s|\
 	friendlyarm,nanopc-t6|\
 	hinlink,opc-h28k|\
-	nlnet,xgp|\
 	mmbox,anas3035|\
 	nlnet,xiguapi-v3|\
 	radxa,e20c|\
