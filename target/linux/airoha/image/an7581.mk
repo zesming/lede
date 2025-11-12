@@ -42,3 +42,25 @@ define Device/airoha_an7581-evb-emmc
   ARTIFACTS := preloader.bin bl31-uboot.fip
 endef
 TARGET_DEVICES += airoha_an7581-evb-emmc
+
+define Device/bell_xg-040g-md
+  $(call Device/FitImageLzma)
+  DEVICE_VENDOR := Nokia Bell
+  DEVICE_MODEL := Nokia Bell XG-040G-MD
+  DEVICE_DTS_CONFIG := config@1
+  KERNEL_LOADADDR := 0x80088000
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_SIZE := 10240k
+  IMAGE_SIZE := 261120k
+  KERNEL_IN_UBI := 1
+  UBINIZE_OPTS := -m 2048 -p 128KiB -s 2048
+  DEVICE_PACKAGES := airoha-en7581-npu-firmware kmod-phy-airoha-en8811h kmod-i2c-an7581 kmod-input-gpio-keys-polled
+  IMAGES += factory.bin sysupgrade.bin
+  IMAGE/factory.bin := append-kernel | pad-to $$$$(KERNEL_SIZE) | append-ubi
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  SOC := an7581
+endef
+TARGET_DEVICES += bell_xg-040g-md
+
