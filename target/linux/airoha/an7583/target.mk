@@ -8,3 +8,4 @@ FEATURES+=pwm source-only
 define Target/Description
 	Build firmware images for Airoha an7583 ARM based boards.
 endef
+
