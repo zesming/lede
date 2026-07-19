@@ -13,6 +13,9 @@ on:
   schedule:
     - cron: 0 0 * * *
 
+permissions:
+  contents: write
+
 jobs:
 
   merge:
@@ -22,7 +25,7 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         lfs: true
