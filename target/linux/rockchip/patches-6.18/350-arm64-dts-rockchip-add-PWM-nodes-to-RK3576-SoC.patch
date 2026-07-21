@@ -1,11 +1,15 @@
-From: coolsnowwolf <coolsnowwolf@gmail.com>
-Subject: [PATCH] arm64: dts: rockchip: add PWM nodes to RK3576
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Date: Mon, 02 Jun 2025 18:19:18 +0200
+Subject: [PATCH v2] arm64: dts: rockchip: add PWM nodes to RK3576 SoC dtsi
 
-Add the RK3576 PWM controller nodes, including the multi-channel PWM1
-and PWM2 instances used by RK3576 boards.
+The RK3576 SoC features three distinct PWM controllers, with variable
+numbers of channels. Add each channel as a separate node to the SoC's
+device tree, as they don't really overlap in register ranges.
 
-Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 ---
+ arch/arm64/boot/dts/rockchip/rk3576.dtsi | 208 +++++++++++++++++++++++++++++++
+ 1 file changed, 208 insertions(+)
 
 --- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi

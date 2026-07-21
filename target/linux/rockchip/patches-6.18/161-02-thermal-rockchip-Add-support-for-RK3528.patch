@@ -156,7 +156,7 @@ Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
  static const struct rockchip_tsadc_chip px30_tsadc_data = {
  	/* cpu, gpu */
  	.chn_offset = 0,
-@@ -1280,6 +1370,29 @@ static const struct rockchip_tsadc_chip
+@@ -1280,6 +1370,27 @@ static const struct rockchip_tsadc_chip
  	},
  };
  
@@ -173,8 +173,6 @@ Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 +	.set_alarm_temp = rk_tsadcv3_alarm_temp,
 +	.set_tshut_temp = rk_tsadcv3_tshut_temp,
 +	.set_tshut_mode = rk_tsadcv4_tshut_mode,
-+	.get_trim_code = rk_tsadcv3_get_trim_code,
-+	.trim_slope = 574,
 +	.table = {
 +		.id = rk3528_code_table,
 +		.length = ARRAY_SIZE(rk3528_code_table),
@@ -186,7 +184,7 @@ Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
  static const struct rockchip_tsadc_chip rk3568_tsadc_data = {
  	/* cpu, gpu */
  	.chn_offset = 0,
-@@ -1384,6 +1497,10 @@ static const struct of_device_id of_rock
+@@ -1384,6 +1495,10 @@ static const struct of_device_id of_rock
  		.data = (void *)&rk3399_tsadc_data,
  	},
  	{
