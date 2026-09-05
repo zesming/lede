@@ -628,7 +628,7 @@ define Device/radxa_rock-pi-e-v3
   SOC := rk3328
   DEVICE_DTS := rk3328-rock-pi-e
   IMAGE/sysupgrade.img.gz := boot-common | boot-script | pine64-img | gzip | append-metadata
-  DEVICE_PACKAGES := kmod-button-hotplug kmod-input-adc-keys kmod-rtw88-8723du kmod-rtw88-8821cu kmod-usb-net-cdc-ncm kmod-usb-net-rndis wpad-basic-mbedtls
+  DEVICE_PACKAGES := kmod-button-hotplug kmod-input-adc-keys kmod-rtw88-8723du kmod-usb-net-cdc-ncm kmod-usb-net-rndis wpad-basic-mbedtls
 endef
 TARGET_DEVICES += radxa_rock-pi-e-v3
 
