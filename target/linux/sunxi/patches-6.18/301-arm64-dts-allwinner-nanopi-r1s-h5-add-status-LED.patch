@@ -1,3 +1,15 @@
+From 1845163a052efac124f00656eb72f38947630a42 Mon Sep 17 00:00:00 2001
+From: Chukun Pan <amadeus@jmu.edu.cn>
+Date: Sun, 10 Oct 2021 21:50:18 +0800
+Subject: [PATCH] arm64: dts: allwinner: NanoPi R1S H5: add status LED aliases
+
+Use the SYS LED on the casing for showing system status.
+
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-h5-nanopi-r1s-h5.dts | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h5-nanopi-r1s-h5.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-nanopi-r1s-h5.dts
 @@ -23,6 +23,11 @@
