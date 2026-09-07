@@ -1,6 +1,6 @@
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -50,6 +50,7 @@
+@@ -55,6 +55,7 @@
  
  /* task_struct member predeclarations (sorted alphabetically): */
  struct audit_context;

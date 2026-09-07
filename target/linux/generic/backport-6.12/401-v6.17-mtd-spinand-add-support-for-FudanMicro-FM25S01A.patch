@@ -122,4 +122,3 @@ Link: https://lore.kernel.org/linux-mtd/20250824170013.3328777-1-cnsztl@gmail.co
  extern const struct spinand_manufacturer foresee_spinand_manufacturer;
  extern const struct spinand_manufacturer gigadevice_spinand_manufacturer;
  extern const struct spinand_manufacturer macronix_spinand_manufacturer;
- 

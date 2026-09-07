@@ -102,7 +102,7 @@ Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
  #include <linux/phy.h>
  #include <linux/phy_fixed.h>
  #include <linux/phylink.h>
-@@ -62,6 +63,7 @@ struct phylink {
+@@ -61,6 +62,7 @@ struct phylink {
  
  	/* List of available PCS */
  	struct list_head pcs_list;

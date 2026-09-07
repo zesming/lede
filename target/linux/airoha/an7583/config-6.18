@@ -157,32 +157,17 @@ CONFIG_HAS_DMA=y
 CONFIG_HAS_IOMEM=y
 CONFIG_HAS_IOPORT=y
 CONFIG_HAS_IOPORT_MAP=y
-<<<<<<<< HEAD:target/linux/airoha/an7583/config-6.12
-<<<<<<<< HEAD:target/linux/airoha/an7583/config-6.6
-========
-# CONFIG_HISILICON_ERRATUM_162100801 is not set
->>>>>>>> 3dcc27fff2337dfe5fba0b1349b273a0992fec2a:target/linux/airoha/an7583/config-6.12
-========
->>>>>>>> d45599b9a9f46b7e4a1791ffbf007b8c9ad2448f:target/linux/airoha/an7583/config-6.18
 CONFIG_HOTPLUG_CORE_SYNC=y
 CONFIG_HOTPLUG_CORE_SYNC_DEAD=y
 CONFIG_HOTPLUG_CPU=y
 CONFIG_HOTPLUG_SMT=y
 CONFIG_HW_RANDOM=y
 CONFIG_HW_RANDOM_AIROHA=y
-<<<<<<<< HEAD:target/linux/airoha/an7583/config-6.12
-<<<<<<<< HEAD:target/linux/airoha/an7583/config-6.6
-# CONFIG_HISILICON_ERRATUM_162100801 is not set
-========
->>>>>>>> 3dcc27fff2337dfe5fba0b1349b273a0992fec2a:target/linux/airoha/an7583/config-6.12
-# CONFIG_IDPF is not set
-========
 CONFIG_I2C=y
 CONFIG_I2C_BOARDINFO=y
 CONFIG_I2C_CHARDEV=y
 CONFIG_I2C_HELPER_AUTO=y
 CONFIG_I2C_MT7621=y
->>>>>>>> d45599b9a9f46b7e4a1791ffbf007b8c9ad2448f:target/linux/airoha/an7583/config-6.18
 CONFIG_ILLEGAL_POINTER_VALUE=0xdead000000000000
 CONFIG_INITRAMFS_SOURCE=""
 CONFIG_IO_URING=y
@@ -215,15 +200,7 @@ CONFIG_LZO_COMPRESS=y
 CONFIG_LZO_DECOMPRESS=y
 CONFIG_MDIO_AIROHA=y
 CONFIG_MDIO_BUS=y
-<<<<<<<< HEAD:target/linux/airoha/an7583/config-6.12
-CONFIG_MDIO_DEVICE=y
-CONFIG_MDIO_AIROHA=y
-CONFIG_MDIO_DEVRES=y
-# CONFIG_MEDIATEK_GE_SOC_PHY is not set
-# CONFIG_MEMCG is not set
-========
 CONFIG_MEDIATEK_GE_SOC_PHY=y
->>>>>>>> d45599b9a9f46b7e4a1791ffbf007b8c9ad2448f:target/linux/airoha/an7583/config-6.18
 CONFIG_MFD_SYSCON=y
 CONFIG_MIGRATION=y
 CONFIG_MMC=y
