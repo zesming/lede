@@ -9,6 +9,12 @@ name: OpenWrt-CI
 
 on:
   workflow_dispatch:
+    inputs:
+      build_jobs:
+        description: 'Parallel build jobs (0 = all available CPUs)'
+        required: false
+        default: '0'
+        type: string
   schedule:
     - cron: 0 20 * * *
 
@@ -24,7 +30,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Space cleanup and Initialization environment
+      - name: Space cleanup
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
@@ -34,11 +40,8 @@ jobs:
           sudo -E apt update
           sudo -E apt -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
           sudo -E apt -y full-upgrade
-          sudo -E apt -y install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
-          sudo -E systemctl daemon-reload
           sudo -E apt -y autoremove --purge
           sudo -E apt clean
-          sudo -E timedatectl set-timezone "Asia/Shanghai"
 
       - name: Checkout OpenWrt
         uses: actions/checkout@v7
@@ -55,7 +58,45 @@ jobs:
           dotnet: true
           haskell: true
           large-packages: true
-          swap-storage: true
+          swap-storage: false
+
+      # Install after all cleanup so the action cannot remove build dependencies.
+      - name: Install build dependencies
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo -E apt -y install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+          sudo -E systemctl daemon-reload
+          sudo -E apt clean
+          sudo -E timedatectl set-timezone "Asia/Shanghai"
+
+      - name: Ensure at least 8 GiB swap
+        run: |
+          target_kib=$((8 * 1024 * 1024))
+          current_kib=$(awk '/^SwapTotal:/ {print $2}' /proc/meminfo)
+          if (( current_kib < target_kib )); then
+            # Include one extra MiB for the swap header.
+            extra_mib=$(((target_kib - current_kib + 1023) / 1024 + 1))
+            available_kib=$(df -Pk "$RUNNER_TEMP" | awk 'NR == 2 {print $4}')
+            # Leave at least 50 GiB for this firmware build after allocating swap.
+            if (( available_kib < extra_mib * 1024 + 50 * 1024 * 1024 )); then
+              echo '::error::Insufficient disk space to add swap and retain 50 GiB for the build'
+              exit 1
+            fi
+            swap_file=$(mktemp "$RUNNER_TEMP/lede-swap.XXXXXX")
+            sudo fallocate -l "${extra_mib}M" "$swap_file"
+            sudo chmod 600 "$swap_file"
+            sudo mkswap "$swap_file"
+            sudo swapon "$swap_file"
+          fi
+          free -h
+          swapon --show
+          df -h "$RUNNER_TEMP"
+          actual_kib=$(awk '/^SwapTotal:/ {print $2}' /proc/meminfo)
+          if (( actual_kib < target_kib )); then
+            echo '::error::Swap setup did not reach the requested capacity'
+            exit 1
+          fi
 
       - name: Prepare OpenClash
         run: |
@@ -101,8 +142,11 @@ jobs:
         run: make download -j16
 
       - name: Compile firmware
+        env:
+          BUILD_JOBS: ${{ inputs.build_jobs || '0' }}
+          DIAGNOSTICS_DIR: ${{ runner.temp }}/ci-diagnostics
         run: |
-          make -j$(nproc) || make -j1 V=s
+          bash .github/scripts/ci-build.sh
           echo "======================="
           echo "Space usage:"
           echo "======================="
@@ -116,9 +160,9 @@ jobs:
         run: |
           mkdir -p ./artifact/package
           mkdir -p ./artifact/buildinfo
-          rm -rf $(find ./bin/targets/ -type d -name "packages")
-          cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-          cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+          find ./bin/targets/ -type d -name packages -prune -exec rm -rf -- {} +
+          find ./bin/packages/ -type f -name '*.ipk' -exec cp -t ./artifact/package/ -- {} +
+          find ./bin/targets/ -type f \( -name '*.buildinfo' -o -name '*.manifest' \) -exec cp -t ./artifact/buildinfo/ -- {} +
 
       - name: Upload buildinfo
         uses: actions/upload-artifact@v4
@@ -137,3 +181,12 @@ jobs:
         with:
           name: OpenWrt_firmware
           path: ./bin/targets/
+
+      - name: Upload build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenWrt_diagnostics
+          path: ${{ runner.temp }}/ci-diagnostics/
+          if-no-files-found: ignore
+          retention-days: 7
