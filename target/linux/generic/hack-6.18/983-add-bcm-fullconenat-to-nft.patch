@@ -1,14 +1,11 @@
 From: coolsnowwolf <coolsnowwolf@gmail.com>
 Subject: [PATCH] netfilter: connect nft masquerade to Broadcom fullcone
 
-Pass the selector in the NAT range used by the IPv4 masquerade call,
-including both ip and inet tables. Preserve ordinary masquerade and IPv6.
-
 Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
 
 --- a/include/uapi/linux/netfilter/nf_tables.h
 +++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -1485,12 +1485,14 @@
+@@ -1499,12 +1499,14 @@
   * @NFTA_MASQ_FLAGS: NAT flags (see NF_NAT_RANGE_* in linux/netfilter/nf_nat.h) (NLA_U32)
   * @NFTA_MASQ_REG_PROTO_MIN: source register of proto range start (NLA_U32: nft_registers)
   * @NFTA_MASQ_REG_PROTO_MAX: source register of proto range end (NLA_U32: nft_registers)
